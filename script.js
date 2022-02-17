@@ -20,13 +20,21 @@ function operate(operator, num1, num2) {
     }
 }
 
+// Funtion to show variable on display
+function showNumbers() {
+    display.innerHTML = displayString
+
+    if (displayString == "") {
+        display.innerHTML = "0"
+    }
+}
+
 // Initialize string to show on the display
 let displayString = ""
 
 let display = document.querySelector('.display')
 
-// Wire the number-keys, so they display the numbers
-// and store the number as string
+// Wire the number-keys and store as String
 let buttons = document.querySelectorAll(".number")
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -38,32 +46,22 @@ buttons.forEach((button) => {
     )
 })
 
-// Wire the Clear-key to clear the display
-// and empty the variable storing the number-string
+// Wire the Clear-key to clear the variable
 let clear = document.querySelector("#clear")
 clear.addEventListener('click', () => {
     displayString = ""
-    display.innerHTML = displayString
-
-    if (displayString == "") {
-        display.innerHTML = "0"
-    }
+    showNumbers()
 })
 
 // Wire the Delete-key to delete the last entered number
 let del = document.querySelector('#delete')
 del.addEventListener('click', () => {
     displayString = displayString.slice(0, -1)
-    display.innerHTML = displayString
+    showNumbers()
 
-    if (displayString == "") {
-        display.innerHTML = "0"
-    }
 })
 
-if (displayString == "") {
-    display.innerHTML = "0"
-}
+showNumbers()
 
 
 
