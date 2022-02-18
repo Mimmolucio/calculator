@@ -16,7 +16,7 @@ body {
     height: 500px;
     border-style: solid;
     border-color: black;
-    background-color: lightblue;
+    background-color:steelblue;
     padding: 17px;
     display: flex;
     flex-direction: column;
