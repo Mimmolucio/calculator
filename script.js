@@ -30,7 +30,9 @@ function showNumbers() {
 }
 
 // Initialize string to show on the display
+let oper = ""
 let displayString = ""
+let secondNumber = ""
 
 
 let display = document.querySelector('.display')
@@ -40,7 +42,11 @@ let buttons = document.querySelectorAll(".number")
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         if (displayString.length < 9) {
+            if (oper != "") {
+                secondNumber += button.innerHTML
+            } else {
             displayString += button.innerHTML
+            }
         }
         display.innerHTML = displayString
     }
@@ -51,6 +57,7 @@ buttons.forEach((button) => {
 let clear = document.querySelector("#clear")
 clear.addEventListener('click', () => {
     displayString = ""
+    operator = ""
     showNumbers()
 })
 
@@ -65,15 +72,24 @@ del.addEventListener('click', () => {
 
 
 // select operators
-let divide = document.querySelector('#divide')
-let multiply = document.querySelector('#mulitiply')
-let add = document.querySelector('#add')
-let subtract = document.querySelector('#subtract')
+let operator = document.querySelectorAll('.operator')
+operator.forEach((op), () => {
+    op.addEventListener('click', () => {
+        if (oper != "") {
+            oper = op.innerHTML
+            displayString = operate(oper, parseInt(displayString), parseInt(secondNumber))
+        } else {
+            oper = op.innerHTML
+        }
+        
+    })
+})
+
+// select equal
 let equal = document.querySelector('#equal')
-let dot = document.querySelector('#dot')
-
-
-
+    equal.addEventListener('click', () => {
+        displayString = operate(oper, parseInt(displayString), parseInt(secondNumber))
+})
 
 
 
