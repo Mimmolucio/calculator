@@ -1,3 +1,11 @@
+let operand1 = ""
+let operand2 = ""
+let oper = ""
+let displayString = ""
+let currentOperand = 1
+
+let display = document.querySelector('.display')
+
 // Define the Operations to calculate
 function operate(operator, num1, num2) {
     switch (operator) {
@@ -29,35 +37,35 @@ function showNumbers() {
     }
 }
 
-// Initialize string to show on the display
-let oper = ""
-let displayString = ""
-let secondNumber = ""
-
-
-let display = document.querySelector('.display')
-
-// Wire the number-keys and store as String
+// Get input from buttons, store them in variable and display numbers
 let buttons = document.querySelectorAll(".number")
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         if (displayString.length < 9) {
             if (oper != "") {
-                secondNumber += button.innerHTML
+                operand2 += button.innerHTML
+                displayString = operand2
+                showNumbers()
+                currentOperand = 2
             } else {
-            displayString += button.innerHTML
+                operand1 += button.innerHTML
+                displayString = operand1
+                showNumbers()
+                currentOperand = 1
             }
         }
-        display.innerHTML = displayString
     }
     )
 })
 
-// Wire the Clear-key to clear the variable
+// Wire the Clear-key to clear the variables
 let clear = document.querySelector("#clear")
 clear.addEventListener('click', () => {
+    operand1 = ""
+    operand2 = ""
     displayString = ""
-    operator = ""
+    oper = ""
+    currentOperand = 1
     showNumbers()
 })
 
@@ -65,30 +73,42 @@ clear.addEventListener('click', () => {
 let del = document.querySelector('#delete')
 del.addEventListener('click', () => {
     displayString = displayString.slice(0, -1)
+    if (currentOperand == 1) {
+        operand1 = operand1.slice(0, -1)
+    } else if (currentOperand == 2) {
+        operand2 = operand2.slice(0, -1)
+    }
     showNumbers()
 
 })
 
-
-
 // select operators
 let operator = document.querySelectorAll('.operator')
-operator.forEach((op), () => {
+operator.forEach((op) => {
     op.addEventListener('click', () => {
         if (oper != "") {
+            operand1 = operate(oper, parseInt(operand1), parseInt(operand2))
+            operand2 = ""
+            displayString = operand1
+            showNumbers()
             oper = op.innerHTML
-            displayString = operate(oper, parseInt(displayString), parseInt(secondNumber))
         } else {
             oper = op.innerHTML
+            currentOperand = 2
         }
-        
+
     })
 })
 
 // select equal
 let equal = document.querySelector('#equal')
-    equal.addEventListener('click', () => {
-        displayString = operate(oper, parseInt(displayString), parseInt(secondNumber))
+equal.addEventListener('click', () => {
+    operand1 = operate(oper, parseInt(operand1), parseInt(operand2))
+    operand2 = ""
+    displayString = operand1
+    showNumbers()
+    oper = ""
+
 })
 
 
