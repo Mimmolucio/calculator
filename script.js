@@ -1,13 +1,102 @@
-let operand1 = ""
-let operand2 = ""
-let oper = ""
-let displayString = ""
-let currentOperand = 1
 
 let display = document.querySelector('.display')
+let buffer = ""
+let operand1 = ""
+let operator = ""
+let firstOperator = true
+let lastCharOperator = true
+let clickedEqual = false
+const maxChars = 9
+
+let numbers = document.querySelectorAll('.number')
+numbers.forEach((number) => {
+    number.addEventListener('click', () => {
+
+        if (buffer.length < maxChars) {
+            storeInput(number.innerHTML)
+        }
+        showNumbers(buffer)
+        lastCharOperator = false
+    })
+})
+
+let operators = document.querySelectorAll('.operator')
+operators.forEach((op) => {
+    op.addEventListener('click', () => {
+        // Update Operator if wrongly clicked or just evaluated
+        if (lastCharOperator == true || clickedEqual == true) {
+            operator = op.innerHTML
+            clickedEqual = false
+        }
+        if (operator == "") {
+
+            operand1 = buffer
+            buffer = ""
+            operator = op.innerHTML
+            lastCharOperator = true
+        } else if (buffer != "") {
+            operand1 = operate(operator, operand1, buffer)
+            buffer = ""
+            operator = op.innerHTML
+            lastCharOperator = true
+            showNumbers(operand1)
+        }
+    })
+})
+
+let equal = document.querySelector('#equal')
+equal.addEventListener('click', () => {
+    if (operand1 != "" && buffer != "" && operator != "") {
+        operand1 = operate(operator, operand1, buffer)
+        buffer = ""
+        showNumbers(operand1)
+        clickedEqual = true
+    }
+
+})
+
+let clear = document.querySelector('#clear')
+clear.addEventListener('click', () => {
+    operand1 = ""
+    buffer = ""
+    operator = ""
+    lastCharOperator = true
+    clickedEqual = false
+    showNumbers(buffer)
+})
+
+let del = document.querySelector('#delete')
+del.addEventListener('click', () => {
+    if (clickedEqual == true) {
+        operand1 = ""
+        buffer = ""
+        operator = ""
+        lastCharOperator = true
+        clickedEqual = false
+        showNumbers(buffer)
+    }
+    buffer = buffer.slice(0, -1)
+    showNumbers(buffer)
+})
+
+
+
+
+function showNumbers(string) {
+    if (string == "") {
+        string = "0"
+    }
+    display.textContent = string
+}
+
+function storeInput(string) {
+    buffer += string
+}
 
 // Define the Operations to calculate
 function operate(operator, num1, num2) {
+    num1 = parseInt(num1)
+    num2 = parseInt(num2)
     switch (operator) {
         case "+":
             return num1 + num2
@@ -28,92 +117,4 @@ function operate(operator, num1, num2) {
     }
 }
 
-// Funtion to show variable on display
-function showNumbers() {
-    display.innerHTML = displayString
-
-    if (displayString == "") {
-        display.innerHTML = "0"
-    }
-}
-
-// Get input from buttons, store them in variable and display numbers
-let buttons = document.querySelectorAll(".number")
-buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-        if (displayString.length < 9) {
-            if (oper != "") {
-                operand2 += button.innerHTML
-                displayString = operand2
-                showNumbers()
-                currentOperand = 2
-            } else {
-                operand1 += button.innerHTML
-                displayString = operand1
-                showNumbers()
-                currentOperand = 1
-            }
-        }
-    }
-    )
-})
-
-// Wire the Clear-key to clear the variables
-let clear = document.querySelector("#clear")
-clear.addEventListener('click', () => {
-    operand1 = ""
-    operand2 = ""
-    displayString = ""
-    oper = ""
-    currentOperand = 1
-    showNumbers()
-})
-
-// Wire the Delete-key to delete the last entered number
-let del = document.querySelector('#delete')
-del.addEventListener('click', () => {
-    displayString = displayString.slice(0, -1)
-    if (currentOperand == 1) {
-        operand1 = operand1.slice(0, -1)
-    } else if (currentOperand == 2) {
-        operand2 = operand2.slice(0, -1)
-    }
-    showNumbers()
-
-})
-
-// select operators
-let operator = document.querySelectorAll('.operator')
-operator.forEach((op) => {
-    op.addEventListener('click', () => {
-        if (oper != "") {
-            operand1 = operate(oper, parseInt(operand1), parseInt(operand2))
-            operand2 = ""
-            displayString = operand1
-            showNumbers()
-            oper = op.innerHTML
-        } else {
-            oper = op.innerHTML
-            currentOperand = 2
-        }
-
-    })
-})
-
-// select equal
-let equal = document.querySelector('#equal')
-equal.addEventListener('click', () => {
-    operand1 = operate(oper, parseInt(operand1), parseInt(operand2))
-    operand2 = ""
-    displayString = operand1
-    showNumbers()
-    oper = ""
-
-})
-
-
-
-showNumbers()
-
-
-
+showNumbers("0")
