@@ -69,3 +69,9 @@ body {
     background-color:rgb(83, 83, 83);
     color: white;
 }
+
+#dot {
+    font-size: 9px;
+    font-weight: bolder;
+}
+
