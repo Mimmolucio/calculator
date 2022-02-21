@@ -86,6 +86,7 @@ function showNumbers(string) {
     if (string == "") {
         string = "0"
     }
+
     display.textContent = string
 }
 
@@ -109,7 +110,7 @@ function operate(operator, num1, num2) {
             if (num2 == 0) {
                 return "Err. Div0"
             }
-            return num1 / num2
+            return Math.round((num1 / num2) * 100) / 100
             break
         case "*":
             return num1 * num2
